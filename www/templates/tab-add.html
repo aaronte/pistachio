@@ -2,10 +2,21 @@
     <ion-content>
         <div>
             <label class="item item-input item-floating-label">
-                <span class="input-label">Enter Price</span>
-                <input type="text" placeholder="Enter Price" ng-model="purchaseCtrl.price" autofocus>
+                <span class="input-label">What did you buy?</span>
+                <input 
+                    type="text"
+                    placeholder="What did you buy?"
+                    ng-model="purchaseCtrl.item.name"
+                    autofocus>
+                <span class="input-label">For how much?</span>
+                <input 
+                    type="tel" 
+                    placeholder="For how much?" 
+                    ng-model="purchaseCtrl.item.price"
+                    ng-keypress="purchaseCtrl.validatePriceInput($event)">
             </label>
-            <button class="button button-positive button-full" ng-click="purchaseCtrl.addPurchase(purchaseCtrl.price)">
+            <button class="button button-positive button-full" 
+                    ng-click="purchaseCtrl.addPurchase(purchaseCtrl.item)">
                 Submit
             </button>
         </div>

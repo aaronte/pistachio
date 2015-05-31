@@ -3,20 +3,33 @@ angular.module('starter.controllers', [])
     .controller('PurchaseCtrl', function (purchases, storage) {
         var vm = this;
 
-        vm.price = '';
+        vm.item = {
+            name: '',
+            price: ''
+        }
 
         vm.addPurchase = addPurchase;
+        vm.validatePriceInput = validatePriceInput;
 
-        function addPurchase(purchaseItem) {
-            var transactionName = 'Item ' + (purchases.purchases.length + 1);
-            var item = {
-                name: transactionName,
-                value: purchaseItem
-            };
-
+        function addPurchase(item) {
             purchases.purchases.push(item);
-            storage.insertTransaction(transactionName, purchaseItem);
-            vm.price = '';
+            storage.insertTransaction(item.name, item.price);
+            resetItem();
+        }
+
+        function resetItem() {
+            vm.item.name = '';
+            vm.item.price = '';
+        }
+
+        function validKeypress(keyCode) {
+            return (keyCode >= 48 && keyCode <= 57) || keyCode === 46;
+        }
+
+        function validatePriceInput(event) {
+            if (!validKeypress(event.keyCode)) {
+                event.preventDefault();
+            }
         }
     })
 
