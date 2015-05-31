@@ -1,9 +1,9 @@
 <ion-view view-title="Dashboard">
     <ion-content class="padding">
         <div class="list">
-            <a ng-repeat="purchase in dashCtrl.purchases" class="item" href="#">
-                {{purchase.name}}
-                <span class="item-note" ng-bind="purchase.value"></span>
+            <a ng-repeat="transaction in dashCtrl.transactions" class="item" href="#">
+                {{transaction.vendor_name}}
+                <span class="item-note" ng-bind="transaction.amount"></span>
             </a>
         </div>
     </ion-content>

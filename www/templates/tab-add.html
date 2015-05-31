@@ -1,0 +1,14 @@
+<ion-view title="Add Purchase">
+    <ion-content>
+        <div>
+            <label class="item item-input item-floating-label">
+                <span class="input-label">Enter Price</span>
+                <input type="text" placeholder="Enter Price" ng-model="purchaseCtrl.price" autofocus>
+            </label>
+            <button class="button button-positive button-full" ng-click="purchaseCtrl.addPurchase(purchaseCtrl.price)">
+                Submit
+            </button>
+        </div>
+
+    </ion-content>
+</ion-view>

@@ -1,24 +1,33 @@
 angular.module('starter.controllers', [])
 
-    .controller('PurchaseCtrl', function (purchases) {
+    .controller('PurchaseCtrl', function (purchases, storage) {
         var vm = this;
+
+        vm.price = '';
 
         vm.addPurchase = addPurchase;
 
         function addPurchase(purchaseItem) {
+            var transactionName = 'Item ' + (purchases.purchases.length + 1);
             var item = {
-                name: 'Item ' + (purchases.purchases.length + 1),
+                name: transactionName,
                 value: purchaseItem
             };
 
             purchases.purchases.push(item);
+            storage.insertTransaction(transactionName, purchaseItem);
+            vm.price = '';
         }
     })
 
-    .controller('DashCtrl', function (purchases) {
+    .controller('DashCtrl', function ($scope, storage) {
         var vm = this;
 
-        vm.purchases = purchases.purchases;
+        vm.transactions = storage.transactions;
+
+        $scope.$on("$ionicView.enter", function(){
+            vm.transactions = storage.transactions;
+        });
     })
 
     .controller('ChatsCtrl', function ($scope, Chats) {
