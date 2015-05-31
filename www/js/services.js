@@ -1,5 +1,11 @@
 angular.module('starter.services', [])
 
+    .service('purchases', function () {
+        var vm = this;
+
+        vm.purchases = [];
+    })
+
     .factory('Chats', function () {
         // Might use a resource here that returns a JSON array
 
