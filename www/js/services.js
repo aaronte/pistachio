@@ -6,67 +6,54 @@ angular.module('starter.services', [])
         vm.purchases = [];
     })
 
-    .service('storage', function () {
+    .service('storage', function ($cordovaSQLite, $q) {
         var vm = this;
-        var DB_NAME = 'Database';
-        var DB_VERSION = '1.0';
-        var DB_DISPLAY_NAME = 'Pistachio';
-        var DB_SIZE = 200000;
+        var DB_NAME = 'pistachio.db';
+        //var DB = $cordovaSQLite.openDB({ name: DB_NAME });
+        var DB = window.openDatabase(DB_NAME, '1.0', 'Cordova Demo', 200000);
         var TRANSACTIONS_SCHEMA = '(vendor_name, amount)';
 
         vm.transactions = [];
 
         vm.setUp = setUp;
         vm.insertTransaction = insertTransaction;
+        vm.getTransactions = getTransactions;
 
         function setUp() {
-            var db = openDatabase();
-            db.transaction(populateDB, errorCB, successCB);
-        }
+            var query = {
+                dropTable: 'DROP TABLE IF EXISTS transactions',
+                createTable: 'CREATE TABLE IF NOT EXISTS transactions ' + TRANSACTIONS_SCHEMA
+            };
 
-        function populateDB(tx) {
-            //tx.executeSql('DROP TABLE IF EXISTS transactions'); DROP TABLE EVERY TIME
-            tx.executeSql('CREATE TABLE IF NOT EXISTS transactions ' + TRANSACTIONS_SCHEMA);
-        }
+            $cordovaSQLite.execute(DB, query.createTable).then(createSuccess, logError);
 
-        function insertTransaction(vendor_name, amount) {
-            var db = openDatabase();
-            db.transaction(insertToDB, errorCB, successCB);
-
-            function insertToDB(tx) {
-                var INSERT_STATEMENT = 'INSERT INTO transactions ';
-                tx.executeSql(INSERT_STATEMENT + TRANSACTIONS_SCHEMA + ' VALUES (\'' + vendor_name + '\', ' + amount + ')');
+            function createSuccess(result) {
+                console.log(result);
             }
         }
 
-        function successCB() {
-            var db = openDatabase();
-            db.transaction(queryDB, errorCB);
+        function insertTransaction(vendorName, price) {
+            var query = 'INSERT INTO transactions ' + TRANSACTIONS_SCHEMA + ' VALUES (?, ?)';
+
+            $cordovaSQLite.execute(DB, query, [vendorName, price]).then(function(result) {
+                console.log(result);
+            }, logError);
         }
 
-        function queryDB(tx) {
-            tx.executeSql('SELECT * FROM transactions', [], querySuccess, errorCB);
+        function getTransactions() {
+            var deferredPromise = $q.defer();
+            var query = 'SELECT * FROM transactions';
+
+            $cordovaSQLite.execute(DB, query).then(function(result) {
+                vm.transactions = angular.copy(result.rows);
+                deferredPromise.resolve(result.rows);
+            });
+
+            return deferredPromise.promise;
         }
 
-        function openDatabase() {
-            return window.openDatabase(DB_NAME, DB_VERSION, DB_DISPLAY_NAME, DB_SIZE);
-        }
-
-        function querySuccess(tx, results) {
-            vm.transactions = angular.copy(results.rows);
-            console.log('Returned rows = ' + results.rows.length);
-
-            if (!results.rowsAffected) {
-                console.log('No rows affected!');
-                return false;
-            }
-            console.log('Last inserted row ID = ' + results.insertId);
-        }
-
-        function errorCB(err) {
-            if (err.code || err.message) {
-                console.log('Error processing SQL: ' + err.code, err.message);
-            }
+        function logError(error) {
+            console.log(error);
         }
     })
 

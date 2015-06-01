@@ -39,6 +39,7 @@ angular.module('starter.controllers', [])
         vm.transactions = storage.transactions;
 
         $scope.$on("$ionicView.enter", function(){
+            storage.getTransactions();
             vm.transactions = storage.transactions;
         });
     })
