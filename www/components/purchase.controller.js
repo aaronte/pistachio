@@ -2,7 +2,7 @@ angular
     .module('pistachio')
     .controller('PurchaseController', PurchaseController);
 
-function PurchaseController(purchases) {
+function PurchaseController(purchases, storage) {
     var self = this;
 
     self.item = {
