@@ -34,7 +34,7 @@ function Config($stateProvider, $urlRouterProvider) {
             url: '/dash',
             views: {
                 'tab-dash': {
-                    templateUrl: 'templates/tab-dash.html',
+                    templateUrl: 'components/dashboard/tab-dash.html',
                     controller: 'DashController as dashCtrl'
                 }
             }
