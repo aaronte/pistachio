@@ -22,7 +22,6 @@ framework.sublime-workspace
 UserInterfaceState.xcuserstate
 
 bower_components/
-components/
 tmp
 temp
 dist
