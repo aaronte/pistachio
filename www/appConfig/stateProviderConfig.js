@@ -24,7 +24,7 @@ function Config($stateProvider, $urlRouterProvider) {
             url: '/add',
             views: {
                 'tab-add': {
-                    templateUrl: 'templates/tab-add.html',
+                    templateUrl: 'components/purchase/tab-add.html',
                     controller: 'PurchaseController as purchaseCtrl'
                 }
             }
