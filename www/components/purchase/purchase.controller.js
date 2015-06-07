@@ -3,15 +3,16 @@ angular
     .controller('PurchaseController', PurchaseController);
 
 function PurchaseController(purchases, storage) {
-    var self = this;
+    var vm = this;
 
-    self.item = {
+    vm.item = {
         name: '',
         price: ''
     };
 
-    self.addPurchase = addPurchase;
-    self.validatePriceInput = validatePriceInput;
+    vm.addPurchase = addPurchase;
+    vm.getTags = getTags;
+    vm.selectItem = selectItem;
 
     function addPurchase(item) {
         purchases.purchases.push(item);
@@ -20,18 +21,18 @@ function PurchaseController(purchases, storage) {
     }
 
     function resetItem() {
-        self.item.name = '';
-        self.item.price = '';
+        vm.item.name = '';
+        vm.item.price = '';
     }
 
-    function validKeypress(keyCode) {
-        return (keyCode >= 48 && keyCode <= 57) || keyCode === 46;
+    function getTags(query) {
+        return [{id: "1", name: query + "1", view: "view: " + query + "1"},
+            {id: "2", name: query + "2", view: "view: " + query + "2"},
+            {id: "3", name: query + "3", view: "view: " + query + "3"}];
     }
 
-    function validatePriceInput(event) {
-        if (!validKeypress(event.keyCode)) {
-            event.preventDefault();
-        }
+    function selectItem(callback) {
+        vm.item.name = callback.item.name;
     }
 }
 
