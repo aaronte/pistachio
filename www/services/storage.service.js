@@ -26,11 +26,7 @@ function storage($cordovaSQLite, $q) {
         // Uncomment if you want to drop your current 'transactions' table
         //$cordovaSQLite.execute(DB, query.dropTable);
 
-        $cordovaSQLite.execute(DB, query.createTable).then(createSuccess, logError);
-
-        function createSuccess(result) {
-            console.log(result);
-        }
+        $cordovaSQLite.execute(DB, query.createTable).then(function() {}, logError);
     }
 
     function insertTransaction(vendorName, price) {

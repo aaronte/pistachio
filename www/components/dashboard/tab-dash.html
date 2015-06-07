@@ -1,0 +1,20 @@
+<ion-view view-title="Dashboard">
+    <ion-content class="padding">
+        <div ng-if="dashCtrl.loadingTransactions">
+            Loading...
+        </div>
+        <div ng-if="!dashCtrl.loadingTransactions">
+            <div ng-if="!!dashCtrl.transactions[0]" class="list">
+                <a ng-repeat="transaction in dashCtrl.transactions | orderBy : '-date'"
+                   class="item" href="#">
+                    <h2 ng-bind="transaction.vendor_name"></h2>
+                    <p ng-bind="transaction.date | date: 'MMM dd, yyyy hh:mm a'"></p>
+                    <p ng-bind="'$' + transaction.amount"></p>
+                </a>
+            </div>
+            <div ng-if="!dashCtrl.transactions[0]">
+                You have no transactions. :(
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
